@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: configmap-test
+spec:
+  containers:
+    - name: test-container
+      image: busybox:1.36
+      command: ["sh", "-c", "env | grep '^APP_' && sleep 3600"]
+      envFrom:
+        - configMapRef:
+            name: app-config
