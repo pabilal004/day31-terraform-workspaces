@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: day40-limit-range
+  namespace: day40-quota-demo
+spec:
+  limits:
+    - type: Container
+      defaultRequest:
+        cpu: "100m"
+        memory: "64Mi"
+      default:
+        cpu: "500m"
+        memory: "128Mi"
