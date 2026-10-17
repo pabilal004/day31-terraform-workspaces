@@ -1,55 +1,63 @@
 # Day 43 — Kubernetes Namespaces
 
-## Objective
-Organize Kubernetes resources by environment using namespaces.
+## Goal
+Practice separating workloads into `dev`, `staging`, and `production` namespaces in one Kubernetes cluster.
 
-## Lab environment
-- Cluster: kind `devops-cluster`
-- Kubernetes context: `kind-devops-cluster`
-- Namespaces created: `dev`, `staging`, `production`
-- Deployment: `nginx-dev`
-- Namespace: `dev`
-- Image: `nginx:1.28`
-- Desired replicas: 2
+## Namespaces
+Create the three namespaces (skip any that already exist):
 
-## Apply
 ```bash
 kubectl create namespace dev
 kubectl create namespace staging
 kubectl create namespace production
-kubectl apply -f nginx-dev.yaml
 ```
 
-If the namespaces already exist, the create commands may report that they already exist; this is expected.
+## Deploy Nginx to each environment
+
+Apply the manifests:
+
+```bash
+kubectl apply -f nginx-dev.yaml
+kubectl apply -f nginx-staging.yaml
+kubectl apply -f nginx-production.yaml
+```
+
+| Namespace | Deployment | Desired replicas |
+|---|---|---:|
+| `dev` | `nginx-dev` | 2 |
+| `staging` | `nginx-staging` | 2 |
+| `production` | `nginx-production` | 3 |
+
+All manifests use the `nginx:1.28` image. Replica counts are for this learning lab, not production sizing guidance.
 
 ## Verify
+
 ```bash
 kubectl get namespaces
-kubectl get deployments -n dev
+kubectl get deployments -A
 kubectl get pods -n dev
 kubectl get pods -n staging
 kubectl get pods -n production
+kubectl get pods -A
 ```
 
-Expected: `nginx-dev` is 2/2 ready in `dev`; this exercise creates no Pods in `staging` or `production`.
+Expected: each Deployment becomes Ready with its desired replica count, and its pods appear only in the namespace specified in its manifest.
 
-## Useful commands
+## Useful namespace commands
+
 ```bash
-kubectl get pods -A
-kubectl describe namespace dev
-kubectl config view --minify
+kubectl get pods -n dev
+kubectl get deployments -n staging
+kubectl describe deployment nginx-production -n production
 kubectl config set-context --current --namespace=dev
 kubectl config set-context --current --namespace=default
 ```
 
-## Key learnings
-- Namespaces organize namespaced resources within a cluster.
-- Use `-n <namespace>` to target a namespace for a command.
-- Namespaces alone are not a complete security boundary; RBAC, network policies, and other controls may be needed.
-- Changing the current context namespace does not move existing resources.
+Changing the current context namespace only changes the default namespace for future commands; it does not move existing resources.
 
-## Cleanup (optional)
-Only run this if you intend to remove this lab workload:
-```bash
-kubectl delete deployment nginx-dev -n dev
-``
+## Key learnings
+- Namespaces logically organize resources within one cluster.
+- Use `-n <namespace>` to target a specific environment.
+- Use `-A` to list resources across all namespaces.
+- Namespace separation alone is not a complete security boundary. Use appropriate RBAC, NetworkPolicies, and other controls where required.
+- Existing namespaces such as `day36-dev` and `day40-quota-demo` are separate practice resources and are not deleted by this lab.
