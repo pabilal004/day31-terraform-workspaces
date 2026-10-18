@@ -1,0 +1,28 @@
+name: Kubernetes Manifest Validation
+
+on:
+  push:
+    paths:
+      - "day43-kubernetes-namespaces/*.yaml"
+      - ".github/workflows/kubernetes-validation.yml"
+  pull_request:
+    paths:
+      - "day43-kubernetes-namespaces/*.yaml"
+      - ".github/workflows/kubernetes-validation.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Validate Kubernetes manifests
+        run: |
+          kubectl apply --dry-run=client -f day43-kubernetes-namespaces/nginx-dev.yaml
+          kubectl apply --dry-run=client -f day43-kubernetes-namespaces/nginx-staging.yaml
+          kubectl apply --dry-run=client -f day43-kubernetes-namespaces/nginx-production.yaml
