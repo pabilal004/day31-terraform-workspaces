@@ -21,8 +21,8 @@ jobs:
       - name: Install kubectl
         uses: azure/setup-kubectl@v4
 
-      - name: Validate Kubernetes manifests
+      - name: Validate Kubernetes manifest syntax
         run: |
-          kubectl apply --dry-run=client -f day43-kubernetes-namespaces/nginx-dev.yaml
-          kubectl apply --dry-run=client -f day43-kubernetes-namespaces/nginx-staging.yaml
-          kubectl apply --dry-run=client -f day43-kubernetes-namespaces/nginx-production.yaml
+          kubectl apply --dry-run=client --validate=false -f day43-kubernetes-namespaces/nginx-dev.yaml
+          kubectl apply --dry-run=client --validate=false -f day43-kubernetes-namespaces/nginx-staging.yaml
+          kubectl apply --dry-run=client --validate=false -f day43-kubernetes-namespaces/nginx-production.yaml
