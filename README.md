@@ -109,3 +109,9 @@ Repeat for other workspaces if required.
 Terraform state, the `.terraform/` directory, plan files, and generated environment output files are intentionally ignored.
 
 The Terraform dependency lock file `.terraform.lock.hcl` should be committed when generated locally.
+
+---
+
+## More Cloud/DevOps labs
+
+- [Day 46 — Monitoring and Observability](day46-monitoring-observability/README.md): Kubernetes monitoring with Prometheus and Grafana, lightweight Helm values, and beginner-friendly PromQL practice queries.
