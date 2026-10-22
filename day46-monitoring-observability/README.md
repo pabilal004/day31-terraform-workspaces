@@ -166,6 +166,18 @@ kubectl top pods -A
 
 The kind lab previously needed Metrics Server's `--kubelet-insecure-tls` option because of a local kubelet certificate mismatch. That setting is only a workaround for this disposable learning cluster. **Do not copy it into production.** Production clusters should use valid kubelet certificates and secure TLS verification.
 
+## Import the prepared Grafana dashboard
+
+The repository includes [grafana-dashboard.json](grafana-dashboard.json), a starter dashboard with panels for target health, pods by namespace, container CPU and memory, and node CPU and memory.
+
+1. Open Grafana at http://localhost:3000 and sign in.
+2. Open **Dashboards → New → Import** (the menu wording may vary).
+3. Open the JSON file from this repository, copy its full contents, and paste them into the import box. Alternatively, download the file from GitHub and upload it if your Grafana version offers that option.
+4. When asked for a Prometheus data source, select the Prometheus data source installed with the monitoring stack.
+5. Click **Import**.
+
+If a panel says “No data,” first check the same PromQL query in Prometheus at http://localhost:9090. Some node panels require Node Exporter metrics to be available; the container memory panel uses `container_memory_rss`, which was confirmed present in this lab.
+
 ## Troubleshooting checklist
 
 1. `kubectl get pods -n monitoring` — wait for pods to become Ready.
