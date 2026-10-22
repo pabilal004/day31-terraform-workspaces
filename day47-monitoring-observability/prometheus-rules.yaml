@@ -1,0 +1,40 @@
+# Example rules for a local learning cluster.
+# The kube-prometheus-stack release in this lab is named "monitoring".
+# Alertmanager is disabled in the lab, so these rules do not send notifications.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: day47-kubernetes-health
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  groups:
+    - name: day47.kubernetes.health
+      rules:
+        - alert: PrometheusTargetDown
+          expr: up == 0
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "A Prometheus scrape target is down"
+            description: "Prometheus has failed to scrape {{ $labels.job }} at {{ $labels.instance }} for at least 2 minutes."
+
+        - alert: KubernetesPodNotReady
+          expr: kube_pod_status_ready{condition="true"} == 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "A Kubernetes pod is not Ready"
+            description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has reported not Ready for at least 5 minutes."
+
+        - alert: KubernetesContainerRestartingFrequently
+          expr: increase(kube_pod_container_status_restarts_total[10m]) > 3
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "A Kubernetes container is restarting frequently"
+            description: "Container {{ $labels.container }} in pod {{ $labels.namespace }}/{{ $labels.pod }} restarted more than 3 times over 10 minutes."
