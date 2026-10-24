@@ -87,6 +87,29 @@ kubectl delete -f day47-monitoring-observability/prometheus-rules.yaml
 4. Confirm the relevant pod/exporter is running.
 5. For optional metrics, confirm the metric exists before adding it to a dashboard.
 
+### Control-plane targets show `connection refused` in kind
+
+In this local kind setup, Prometheus may report `connection refused` for the
+`kube-controller-manager`, `kube-scheduler`, `kube-etcd`, or `kube-proxy`
+metrics endpoints at the kind node IP. These components can bind their metrics
+listeners to loopback inside the node container, making them unreachable through
+that IP. This is a local kind scrape limitation, not proof that the Kubernetes
+node itself is unhealthy.
+
+The example `PrometheusTargetDown` rule excludes only those four known
+kind-inaccessible jobs while continuing to alert on other failed scrape targets.
+This exception is for this learning environment; do not copy it blindly into a
+production cluster. Production scrape targets should be configured and secured
+according to the cluster's actual control-plane networking.
+
+After updating the rule file in your local clone, reapply it:
+
+```bash
+kubectl apply -f day47-monitoring-observability/prometheus-rules.yaml
+```
+
+Then check [Prometheus Alerts](http://localhost:9090/alerts) and [Targets](http://localhost:9090/targets).
+
 ### Grafana does not load
 
 1. Check `kubectl get pods -n monitoring`.
