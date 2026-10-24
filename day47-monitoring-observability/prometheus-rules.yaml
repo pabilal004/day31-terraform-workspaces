@@ -13,7 +13,10 @@ spec:
     - name: day47.kubernetes.health
       rules:
         - alert: PrometheusTargetDown
-          expr: up == 0
+          # In this local kind cluster, these control-plane metrics endpoints bind to loopback
+          # inside the node and are not reachable at the node IP. Exclude only those known
+          # kind-inaccessible targets; keep alerting on other failed scrape targets.
+          expr: up{job!~"kube-controller-manager|kube-scheduler|kube-etcd|kube-proxy"} == 0
           for: 2m
           labels:
             severity: warning
