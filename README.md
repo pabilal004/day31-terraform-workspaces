@@ -116,3 +116,5 @@ The Terraform dependency lock file `.terraform.lock.hcl` should be committed whe
 
 - [Day 46 — Monitoring and Observability](day46-monitoring-observability/README.md): Kubernetes monitoring with Prometheus and Grafana, lightweight Helm values, and beginner-friendly PromQL practice queries.
 - [Day 47 — Kubernetes Monitoring Practice](day47-monitoring-observability/README.md): PromQL practice, health troubleshooting, and example Prometheus alert rules.
+- [Day 48 — Prometheus and Grafana](day48-prometheus-grafana/README.md): dashboard panels and Prometheus target status queries.
+- [Day 49 — Monitoring and Troubleshooting](day49-monitoring-troubleshooting/README.md): safe Kubernetes diagnostics, troubleshooting workflow, and PromQL reference.
