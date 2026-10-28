@@ -83,6 +83,21 @@ chmod +x scripts/collect-diagnostics.sh
 
 The script may print cluster information and resource names. Review its output before sharing it publicly and redact sensitive details if any appear.
 
+## Focused monitoring triage
+
+For the previously observed symptom where a monitoring/Grafana Pod showed `2/3` containers ready, use the dedicated [Grafana readiness runbook](runbooks/grafana-readiness-2-of-3.md). The symptom alone does not identify the failing container or root cause, so the live cluster must be checked before recording a fix.
+
+Run the read-only monitoring diagnostics helper:
+
+```bash
+chmod +x scripts/diagnose-monitoring.sh
+./scripts/diagnose-monitoring.sh
+```
+
+Optionally pass a namespace: `./scripts/diagnose-monitoring.sh monitoring`. It reports Pod/container readiness, restarts, waiting reasons, Services, endpoints, and recent Events. It does not modify resources.
+
+Use the [verification checklist](verification-checklist.md) to record what was actually checked and confirmed. Keep credentials, Secret values, tokens, and unredacted logs out of GitHub.
+
 ## Verification checklist
 
 - [ ] Confirmed the intended Kubernetes context.
