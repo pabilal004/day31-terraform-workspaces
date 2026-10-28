@@ -37,7 +37,7 @@ Use the actual Pod name from `kubectl get pods`:
 
 ```bash
 kubectl describe pod <pod-name> -n monitoring
-kubectl get pod <pod-name> -n monitoring -o jsonpath='{range .status.containerStatuses[*]}{.name}{" ready="}{.ready}{" restarts="}{.restartCount}{" waiting="}{.state.waiting.reason}{" lastTermination="}{.lastState.terminated.reason}{"\\n"}{end}'
+kubectl get pod <pod-name> -n monitoring -o jsonpath='{range .status.containerStatuses[*]}{.name}{" ready="}{.ready}{" restarts="}{.restartCount}{" waiting="}{.state.waiting.reason}{" lastTermination="}{.lastState.terminated.reason}{"\n"}{end}'
 ```
 
 Look for:
