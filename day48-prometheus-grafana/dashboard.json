@@ -3,7 +3,7 @@
   "tags": ["day48", "kubernetes", "prometheus"],
   "timezone": "browser",
   "schemaVersion": 39,
-  "version": 1,
+  "version": 2,
   "refresh": "30s",
   "panels": [
     {
@@ -52,7 +52,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(up == 0)",
+          "expr": "count(up == 0)",
           "legendFormat": "Targets DOWN",
           "range": true
         }
