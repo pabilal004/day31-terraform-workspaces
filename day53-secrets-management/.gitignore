@@ -1,0 +1,10 @@
+# Never commit real secret files
+.env
+.env.*
+!.env.example
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+.venv/
+venv/
