@@ -29,4 +29,4 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    HTTPServer(("0.0.0.0", 8000), RequestHandler).serve_forever()
+    HTTPServer(("0.0.0.0", 8000), RequestHandler).serve_forever()  # nosec B104 - required for Docker port publishing
