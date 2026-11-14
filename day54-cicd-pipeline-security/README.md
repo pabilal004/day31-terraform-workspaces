@@ -13,7 +13,7 @@ A practical, cost-free DevSecOps lab that adds automated security gates to a Git
 | Filesystem and IaC scanning | Trivy | Scans files, dependencies, secrets and configuration |
 | Container scanning | Trivy | Checks the built image for known vulnerabilities |
 
-The workflow is at `.github/workflows/security-pipeline.yml`. It runs on pushes and pull requests that change this project, and can also be started manually from the GitHub Actions tab.
+The workflow is at `.github/workflows/day54-security-pipeline.yml (at the repository root)`. It runs on pushes and pull requests that change this project, and can also be started manually from the GitHub Actions tab.
 
 ## Security design choices
 
