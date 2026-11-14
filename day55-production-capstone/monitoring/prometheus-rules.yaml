@@ -1,0 +1,27 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: production-capstone-alerts
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  groups:
+    - name: production-capstone
+      rules:
+        - alert: CapstoneTargetDown
+          expr: up{namespace="production-capstone"} == 0
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: Production capstone target is down
+            description: Prometheus cannot scrape the capstone application.
+        - alert: CapstoneHighRequestRate
+          expr: sum(rate(http_requests_total{namespace="production-capstone"}[5m])) > 50
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: High request rate on production capstone
+            description: Request rate has exceeded 50 requests per second for five minutes.
