@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production-capstone
+  labels:
+    app.kubernetes.io/name: production-capstone
+    environment: production
