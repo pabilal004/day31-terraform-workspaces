@@ -43,15 +43,21 @@ docker compose up --build
 
 ## Deploy to the existing Kind cluster
 
-Build the image, load it into Kind, and apply manifests:
+Choose one namespace-management method. **Recommended: Terraform** (next section), then apply the workload manifests. If you prefer Kubernetes YAML only, apply `k8s/namespace.yaml` and skip Terraform.
+
+Build and load the image:
 
 ```bash
 docker build -t production-capstone:local .
 kind load docker-image production-capstone:local --name devops-cluster
-kubectl apply -f k8s/namespace.yaml
+```
+
+Provision the namespace with Terraform as shown below, then apply the workload:
+
+```bash
 kubectl apply -f k8s/deployment.yaml -f k8s/service.yaml
 kubectl rollout status deployment/production-capstone -n production-capstone
-kubectl get pods,svc,hpa -n production-capstone
+kubectl get pods,svc -n production-capstone
 ```
 
 Test the service using port-forward:
@@ -86,9 +92,10 @@ cd terraform
 terraform init
 terraform plan
 terraform apply
+cd ..
 ```
 
-Then return to the project root and apply the deployment and service manifests. The provider uses the existing `kind-devops-cluster` kube context.
+The provider uses the existing `kind-devops-cluster` kube context. If you created the namespace using `k8s/namespace.yaml` instead, do not apply Terraform unless you first import the namespace into Terraform state.
 
 ## Prometheus alert rules
 
@@ -103,7 +110,7 @@ Confirm the Prometheus Operator's rule selectors before applying. Alert expressi
 
 ## Security controls
 
-- Non-root container user
+- Non-root container user (UID 10001)
 - Read-only root filesystem in Kubernetes
 - Dropped Linux capabilities and no privilege escalation
 - RuntimeDefault seccomp profile
@@ -118,8 +125,17 @@ This is a learning capstone, not a fully production-certified service. Before re
 
 ## Cleanup
 
+If Terraform created the namespace:
+
+```bash
+cd terraform
+terraform destroy
+```
+
+Or, if you created it using YAML:
+
 ```bash
 kubectl delete namespace production-capstone
 ```
 
-If Terraform created the namespace, run `terraform destroy` from the terraform directory instead. Do not run both cleanup methods at the same time.
+Use only the cleanup method matching the namespace creation method.
