@@ -1,0 +1,2 @@
+# The demo intentionally uses only the Python standard library.
+# Keep this file so pip-audit can be included in the security workflow.
