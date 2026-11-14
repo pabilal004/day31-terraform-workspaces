@@ -1,0 +1,16 @@
+services:
+  app:
+    build: .
+    image: production-capstone:local
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: development
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
