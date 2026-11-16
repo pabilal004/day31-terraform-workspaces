@@ -18,7 +18,7 @@ resource "kubernetes_namespace_v1" "capstone" {
     name = "production-capstone"
     labels = {
       "app.kubernetes.io/name" = "production-capstone"
-      environment             = "production"
+      environment              = "production"
     }
   }
 }
